@@ -69,6 +69,55 @@
     });
 
 
+// type animation
+
+// Function to simulate typing animation---------
+function typeWriter(textElement, texts, delay) {
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function type() {
+        const currentText = texts[textIndex];
+        if (isDeleting) {
+            textElement.innerHTML = currentText.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            textElement.innerHTML = currentText.substring(0, charIndex + 1);
+            charIndex++;
+        }
+
+          // Apply different color to the text during animation--------
+          textElement.style.color = '#1E1E1E';
+
+        if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            textIndex++;
+            if (textIndex === texts.length) {
+                textIndex = 0;
+            }
+        } else if (!isDeleting && charIndex === currentText.length) {
+            isDeleting = true;
+        }
+
+        setTimeout(type, delay);
+    }
+
+    setTimeout(type, delay);
+}
+
+// Call the typing animation function----------
+const textElement = document.getElementById('typing-animation');
+const texts = [
+    'Sourcing',
+    'Out Sourcing'
+    
+];
+typeWriter(textElement, texts, 200); 
+
+
+
+
     // Client carousel
     $(".client-carousel").owlCarousel({
         autoplay: true,
