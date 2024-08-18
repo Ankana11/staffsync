@@ -110,7 +110,7 @@ function typeWriter(textElement, texts, delay) {
 const textElement = document.getElementById('typing-animation');
 const texts = [
     'Sourcing',
-    'Out Sourcing'
+    'Outsourcing'
     
 ];
 typeWriter(textElement, texts, 200); 
