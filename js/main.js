@@ -72,13 +72,14 @@
 // type animation
 
 // Function to simulate typing animation---------
-function typeWriter(textElement, texts, delay) {
+function typeWriter(textElement, texts, typingSpeed, deletingSpeed, delayBetweenWords) {
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
 
     function type() {
         const currentText = texts[textIndex];
+
         if (isDeleting) {
             textElement.innerHTML = currentText.substring(0, charIndex - 1);
             charIndex--;
@@ -87,34 +88,39 @@ function typeWriter(textElement, texts, delay) {
             charIndex++;
         }
 
-          // Apply different color to the text during animation--------
-          textElement.style.color = '#1E1E1E';
+        // Apply different color to the text during animation--------
+        textElement.style.color = isDeleting ? '#1E1E1E' : '#FFFFFF';
 
-        if (isDeleting && charIndex === 0) {
+        if (!isDeleting && charIndex === currentText.length) {
+            setTimeout(() => isDeleting = true, delayBetweenWords);
+        } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             textIndex++;
             if (textIndex === texts.length) {
                 textIndex = 0;
             }
-        } else if (!isDeleting && charIndex === currentText.length) {
-            isDeleting = true;
         }
 
-        setTimeout(type, delay);
+        setTimeout(type, isDeleting ? deletingSpeed : typingSpeed);
     }
 
-    setTimeout(type, delay);
+    type();
 }
 
-// Call the typing animation function----------
-const textElement = document.getElementById('typing-animation');
-const texts = [
-    'Sourcing',
-    'Outsourcing'
-    
-];
-typeWriter(textElement, texts, 200); 
 
+function addBlinkingCursor(cursorElement) {
+    setInterval(() => {
+        cursorElement.style.visibility = cursorElement.style.visibility === 'hidden' ? 'visible' : 'hidden';
+    }, 500);
+}
+
+
+const textElement = document.getElementById('typing-animation');
+const cursorElement = document.querySelector('.blinking-cursor');
+const texts = ['Sourcing', 'OutSourcing'];
+
+typeWriter(textElement, texts, 150, 100, 1000);
+addBlinkingCursor(cursorElement);
 
 
 
